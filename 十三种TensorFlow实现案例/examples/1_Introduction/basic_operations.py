@@ -10,11 +10,9 @@ from __future__ import print_function
 
 import tensorflow as tf
 
-# 假如有11GB的显存并使用其中的5.5GB:
-gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.5)
+# 限制显卡显存
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
 sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
-
-#当allow_growth设置为True时，分配器将不会指定所有的GPU内存，而是根据需求增长
 config = tf.ConfigProto()
 config.gpu_options.allow_growth=True
 sess = tf.Session(config=config)
