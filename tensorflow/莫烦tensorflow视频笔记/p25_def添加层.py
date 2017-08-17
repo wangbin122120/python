@@ -11,7 +11,9 @@ def add_layer(inputs, in_size, out_size, activation_function=None):
     # W和b在初始时为0是很不好的，随机生成。
     Weights = tf.Variable(tf.random_normal([in_size, out_size]),dtype=tf.float32)
     biases = tf.Variable(tf.zeros([1, out_size]) + 0.1)
+
     Wx_plus_b = tf.matmul(inputs, Weights) + biases
+    #@注意此句不等于： Wx_plus_b = tf.add(tf.multiply(Weights, inputs), biases)
 
     # 如果没有定义激励函数，那么就用初始的线性函数，否则多加一层则增加一个非线性函数
     if activation_function is None:
