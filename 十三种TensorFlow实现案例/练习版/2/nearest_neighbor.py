@@ -11,4 +11,24 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 mnist = input_data.read_data_sets("/tmp/tensorflow/mnist/input_data/", one_hot=True)
 
-print(mnist.train.next_batch(1))
+Xtr,Ytr=mnist.train.next_batch(5000)
+Xte,Yte=mnist.train.next_batch(500)
+
+xtr=tf.placeholder(tf.float32,[None,784])
+xte=tf.placeholder(tf.float32,[784])
+
+dis=tf.arg_min(tf.reduce_sum(tf.square(xtr-xte),reduction_indices=1),0)
+
+init=tf.global_variables_initializer()
+
+acc=0
+with tf.Session() as sess:
+    sess.run(init)
+    for i in range(len(Xte)):
+        index=sess.run(dis,feed_dict={xtr:Xtr,xte:Xte[i]})
+        # print(index)
+        # print(np.argmax(Ytr[index]),np.argmax(Yte[i]))
+        if np.argmax(Ytr[index])==np.argmax(Yte[i]):
+            acc+=1
+    print('准确率',acc/len(Xte))
+
