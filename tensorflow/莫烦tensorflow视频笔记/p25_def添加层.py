@@ -14,15 +14,17 @@ def add_layer(inputs, in_size, out_size, activation_function=None, layer_name='l
     with tf.name_scope(layer_name):
         with tf.name_scope('weights'):
             Weights = tf.Variable(tf.random_normal([in_size, out_size]), dtype=tf.float32, name='W')
+            tf.summary.histogram(layer_name+'/weights',Weights) #p30添加
         with tf.name_scope('biases'):
             biases = tf.Variable(tf.zeros([1, out_size]) + 0.1, name='b')
+            tf.summary.histogram(layer_name + '/biases', biases)  # p30添加
         with tf.name_scope('Wx_plus_b'):
             Wx_plus_b = tf.matmul(inputs, Weights) + biases
-        # @注意此句不等于： Wx_plus_b = tf.add(tf.multiply(Weights, inputs), biases)
 
         # 如果没有定义激励函数，那么就用初始的线性函数，否则多加一层则增加一个非线性函数
         if activation_function is None:
             outputs = Wx_plus_b
         else:
             outputs = activation_function(Wx_plus_b)  # 这里不需要处理名字，因为每个激励函数自身都有
+        tf.summary.histogram(layer_name + '/outputs', outputs)  # p30添加
         return outputs

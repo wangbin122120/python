@@ -1,12 +1,18 @@
 import matplotlib.pylab as plt
 
 # 是《p26_建造神经网络》程序的例子
-# 在 《p27_结果可视化》添加了plt的图形输出
+# 在《p27_结果可视化》添加了plt的图形输出
+# 在《p29_Tensorboard可视化》中添加了tensorboard的基本图形定义
 
-# 本次程序，添加tensorboard的可视化输出，具体浏览器中的查看方法如下：
+# tf.name_scope(name)            命名空间
+# tf.summary.FileWriter('/tmp/tensorflow/mofan_logs/p29/', sess.graph) 显示在graph
+# tf.summary.scalar(name,data)  显示在event，一般看loss 等训练过程值
+# tf.summary.histogram(name,data)  显示在histogram，一般看W,b,outputs 等结果值
+
+# 本次程序，添加tensorboard的训练过程，包括graph,histograms,events(误差值)
 # 比如最终Summry写到目录“D:\tmp\tensorflow\mofan_logs\p29”，那在终端执行：
 # C:\Users\wangbin>d:
-# D:\>tensorboard --logdir=D:\tmp\tensorflow\mofan_logs\p29
+# D:\>tensorboard --logdir=D:\tmp\tensorflow\mofan_logs\p30
 # Starting TensorBoard b'47' at http://0.0.0.0:6006
 # (Press CTRL+C to quit)
 # 接着在浏览器中打开 网址：localhost:6006
@@ -30,9 +36,6 @@ y_data = np.square(x_data) - 0.5 + noise
 
 # # 建立典型的三层神经网络:输入层-隐藏层-输出层
 
-# 设定参数，要明白设置placeholder，是为了提升训练的效率,因为不需要用到所有数据
-# xs = tf.placeholder(tf.float32, [None, 1])
-# ys = tf.placeholder(tf.float32, [None, 1])
 with tf.name_scope('inputs'):  # tensorboard 中命名框
     xs = tf.placeholder(tf.float32, [None, 1], name='x_input')  # 定义name=数据节点名称
     ys = tf.placeholder(tf.float32, [None, 1], name='y_input')
@@ -46,7 +49,7 @@ predition = add_layer(l1, 10, 1, activation_function=None, layer_name='output_la
 with tf.name_scope('loss'):
     loss = tf.reduce_mean(tf.reduce_sum(tf.square(ys - predition),
                                     reduction_indices=1))
-
+    tf.summary.scalar('loss',loss) #p30添加，显示在event
 with tf.name_scope('train'):
     train_step = tf.train.GradientDescentOptimizer(0.1).minimize(loss)
 
@@ -54,28 +57,32 @@ init = tf.global_variables_initializer()
 
 
 # 可视化过程：
-# 这段程序最好放在外侧，
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
 ax.scatter(x_data, y_data)
-plt.ion()  # 有了这句话，在画图的过程中不会中断程序，不需要人工干预就自动接着执行。 对应的关闭方法：plt.ioff()
+plt.ion()
 plt.show()
 
+
 with tf.Session() as sess:
-    writer = tf.summary.FileWriter('/tmp/tensorflow/mofan_logs/p29/', sess.graph)  # @非常关键的一步：将结果加载到文件中，之后才能在浏览器中查看，并且要在Session()定义之后，否则没有任何对象。# 注意log路径中不能有中文等。
+    merged=tf.summary.merge_all()  #p30添加
+    writer = tf.summary.FileWriter('/tmp/tensorflow/mofan_logs/p30/', sess.graph)  #每次要手动删除之前的log，否则看图像是都会加载，除非
     sess.run(init)
     for i in range(1000):
         sess.run(train_step, feed_dict={xs: x_data, ys: y_data})
         if i % 50 == 0:
-            loss_value = sess.run(loss, feed_dict={xs: x_data, ys: y_data})
-            predition_value = sess.run(predition, feed_dict={xs: x_data})
+            # 由于 这run(loss)会影响 后面sess.run(merged)的数据，所以先注释
+            # loss_value = sess.run(loss, feed_dict={xs: x_data, ys: y_data})
+            # predition_value = sess.run(predition, feed_dict={xs: x_data})
+            events=sess.run(merged, feed_dict={xs: x_data, ys: y_data})
+            #run(merged)主要是将前面tf.summary.merge_all()的所有 tf.summary.scalar()对象，包括loss
+            writer.add_summary(events,i)  # 将每次训练结果以及对应次数i传入图形，这个i就是event图形中的横坐标。
 
-            # 因为循环过程会不断产生lines,在画新lines时，应该先将旧lines删除，由于第一次删除时没有线条，所以会报错，跳过即可。这样最后程序结束时正好保留最终的预测曲线。
-            try:
-                ax.lines.remove(lines[0])
-                # @不要错写成：fig.remove(lines[0])，这样删不掉的。
-            except Exception:
-                pass
-            plt.xlabel('loss=%.5f' % loss_value)
-            lines = ax.plot(x_data, predition_value, 'r-', lw=5)  # lw线条宽度。在ax图片上画预测曲线，因为后面要清除，所以需要一个返回值lines。
-            plt.pause(0.1)
+            # try:
+            #     ax.lines.remove(lines[0])
+            # except Exception:
+            #     pass
+            # plt.xlabel('loss=%.5f' % loss_value)
+            # lines = ax.plot(x_data, predition_value, 'r-', lw=5)
+            # plt.pause(0.1)
+    writer.close()
