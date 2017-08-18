@@ -15,6 +15,7 @@ import matplotlib.pylab as plt
 # D:\>tensorboard --logdir=D:\tmp\tensorflow\mofan_logs\p30
 # Starting TensorBoard b'47' at http://0.0.0.0:6006
 # (Press CTRL+C to quit)
+# linux:\>tensorboard --logdir=/tmp/tensorflow/mofan_logs/p30
 # 接着在浏览器中打开 网址：localhost:6006
 # 注意log路径中不能有中文等。
 
@@ -85,4 +86,4 @@ with tf.Session() as sess:
             # plt.xlabel('loss=%.5f' % loss_value)
             # lines = ax.plot(x_data, predition_value, 'r-', lw=5)
             # plt.pause(0.1)
-    writer.close()
+    # writer.close()
