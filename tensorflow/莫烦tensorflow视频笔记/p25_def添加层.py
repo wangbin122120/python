@@ -8,7 +8,7 @@ sess = tf.Session(config=config)
 
 
 # 定义一个
-def add_layer(inputs, in_size, out_size, activation_function=None, layer_name='layer'):
+def add_layer(inputs, in_size, out_size, activation_function=None, layer_name='layer',keep_prob=1):
     # W和b在初始时为0是很不好的，随机生成。
     # 在p29课中添加name_scope:
     with tf.name_scope(layer_name):
@@ -20,6 +20,7 @@ def add_layer(inputs, in_size, out_size, activation_function=None, layer_name='l
             tf.summary.histogram(layer_name + '/biases', biases)  # p30添加
         with tf.name_scope('Wx_plus_b'):
             Wx_plus_b = tf.matmul(inputs, Weights) + biases
+            Wx_plus_b = tf.nn.dropout(Wx_plus_b,keep_prob)
 
         # 如果没有定义激励函数，那么就用初始的线性函数，否则多加一层则增加一个非线性函数
         if activation_function is None:
