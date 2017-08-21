@@ -7,7 +7,8 @@ import tensorflow as tf
 这个程序，说明dropout 避免过拟合的作用，就是在每次训练的过程中，都会去掉一部分测试用例，以防止过拟合。
 在程序隐藏层和结果层进行限制结果比例，比如：
     输出结果=tf.nn.dropout(输出结果,keep_prob=保留比例)
-    Wx_plus_b = tf.nn.dropout(Wx_plus_b,keep_prob)
+    在《p25_def添加层》：
+        Wx_plus_b = tf.nn.dropout(Wx_plus_b,keep_prob)
 然后在调用时，将keep_prob传入：
     sess.run(train_step, feed_dict={xs: X_train, ys: y_train, keep_prob: 0.5})
 
