@@ -8,6 +8,12 @@ Please note, this code is only for python 3+. If you are using python 2+, please
 """
 from __future__ import print_function
 import tensorflow as tf
+# 限制显卡内存
+config = tf.ConfigProto(allow_soft_placement=True)
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
+config.gpu_options.allow_growth = True #开始不会给tensorflow全部gpu资源 而是按需增加
+sess = tf.Session(config=config)
+
 from tensorflow.examples.tutorials.mnist import input_data
 # number 1 to 10 data
 mnist = input_data.read_data_sets("/tmp/tensorflow/mnist/input_data/", one_hot=True)
