@@ -13,7 +13,7 @@ sess = tf.Session(config=config)
 #
 # #定义几个tensor
 # W=tf.Variable([[1,2,3],[2,3,4]],dtype=tf.float32)  #在保存和读取的时候都要定义好dtype,以免出现数据类型冲突
-# b=tf.Variable([[1,2,3]],dtype=tf.float32)
+# b=tf.Variable([[1,2,3]],dtype=tf.float32)           #@前后数据类型和结构一定要一致！！！
 #
 # #定义好Saver
 # saver = tf.train.Saver()
