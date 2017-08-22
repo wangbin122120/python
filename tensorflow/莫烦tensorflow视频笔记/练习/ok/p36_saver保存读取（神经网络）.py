@@ -14,8 +14,8 @@ sess = tf.Session(config=config)
 #
 # with tf.Session() as sess:
 #     sess.run(tf.global_variables_initializer())
-#     print('path:', save.save(sess, '/tmp/tensorflow/mofan_logs/p36/save2.ckpt'))
-
+#     print('path:', save.save(sess, '/home/w/project/tmp/tensorflow/mofan_logs/p36/save2.ckpt'))
+#
 
 # 提取数据
 import numpy as np
@@ -24,5 +24,5 @@ b = tf.Variable([2, 2, 1], dtype=tf.float32)
 
 save=tf.train.Saver()
 with tf.Session() as sess:
-    save.restore(sess,'/tmp/tensorflow/mofan_logs/p36/save2.ckpt')
+    save.restore(sess,'/home/w/project/tmp/tensorflow/mofan_logs/p36/save2.ckpt')
     print('已经提取完毕：\nW=\n%s\nb=\n%s' % (sess.run(W), sess.run(b)))
