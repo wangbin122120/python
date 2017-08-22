@@ -20,7 +20,7 @@ sess = tf.Session(config=config)
 # 提取数据
 import numpy as np
 W=tf.Variable(np.arange(6).reshape((2,3)),dtype=tf.float32)
-b=tf.Variable(np.arange(3).reshape((1,3)),dtype=tf.float32)
+b=tf.Variable(np.arange(3).reshape(3),dtype=tf.float32)
 
 save=tf.train.Saver()
 with tf.Session() as sess:
