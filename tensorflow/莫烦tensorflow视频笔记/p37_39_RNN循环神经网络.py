@@ -19,14 +19,14 @@ tf.set_random_seed(1)
 mnist = input_data.read_data_sets('/home/w/tmp/tensorflow/mnist/input_data/', one_hot=True)
 
 # hyperparameters
-lr = 0.001
+lr = 0.001  # AdamOptimizer(lr)
 training_iters = 100000
-batch_size = 128  #循环次数
+batch_size = 128  # 循环次数
 
-n_inputs = 28   # 图片像素点的列数，一次放入一整行的28个pix，,MNIST data input (img shape: 28*28)
-n_steps = 28    # 一共有28行，time steps
-n_hidden_units = 128   # neurons in hidden layer
-n_classes = 10      # MNIST classes (0-9 digits)
+n_inputs = 28  # 图片像素点的列数，一次放入一整行的28个pix，,MNIST data input (img shape: 28*28)
+n_steps = 28  # 一共有28行，time steps
+n_hidden_units = 128  # neurons in hidden layer
+n_classes = 10  # MNIST classes (0-9 digits)
 
 # tf Graph input
 x = tf.placeholder(tf.float32, [None, n_steps, n_inputs])
@@ -51,11 +51,11 @@ def RNN(X, weights, biases):
     # hidden layer for input to cell
     ########################################
     # transpose the inputs shape from
-    # X ==> (128 batch * 28 steps, 28 inputs)
+    # X(128,28,28) ==> (128 batch * 28 steps, 28 inputs)
     X = tf.reshape(X, [-1, n_inputs])
 
     # into hidden
-    # X_in = (128 batch * 28 steps, 128 hidden)
+    # X_in ==> (128 batch * 28 steps, 128 hidden)
     X_in = tf.matmul(X, weights['in']) + biases['in']
     # X_in ==> (128 batch, 28 steps, 128 hidden)
     X_in = tf.reshape(X_in, [-1, n_steps, n_hidden_units])
@@ -64,10 +64,13 @@ def RNN(X, weights, biases):
     ##########################################
 
     # basic LSTM Cell.
-    if int((tf.__version__).split('.')[1]) < 12 and int((tf.__version__).split('.')[0]) < 1:
-        cell = tf.nn.rnn_cell.BasicLSTMCell(n_hidden_units, forget_bias=1.0, state_is_tuple=True)
-    else:
-        cell = tf.contrib.rnn.BasicLSTMCell(n_hidden_units)
+    # 输入隐藏层个数，forget_bias=1, 不希望遗忘之前的信息
+    # if int((tf.__version__).split('.')[1]) < 12 and int((tf.__version__).split('.')[0]) < 1:
+    #     cell = tf.nn.rnn_cell.BasicLSTMCell(n_hidden_units, forget_bias=1.0, state_is_tuple=True)
+    # else:
+    #     #tf现在都是1.2.1都是下面这样的输入
+    cell = tf.contrib.rnn.BasicLSTMCell(n_hidden_units)
+
     # lstm cell is divided into two parts (c_state, h_state)
     init_state = cell.zero_state(batch_size, dtype=tf.float32)
 
@@ -80,6 +83,11 @@ def RNN(X, weights, biases):
     # dynamic_rnn receive Tensor (batch, steps, inputs) or (steps, batch, inputs) as X_in.
     # Make sure the time_major is changed accordingly.
     outputs, final_state = tf.nn.dynamic_rnn(cell, X_in, initial_state=init_state, time_major=False)
+    # ''' dynamic_rnn 是非常常用，效果比单纯的rnn()好很多，其中的 time_major 是由输入数据X_in的数据结构而定：
+    #       If true, these `Tensors` must be shaped `[max_time, batch_size, depth]`.
+    #       If false, these `Tensors` must be shaped `[batch_size, max_time, depth]`.
+    # '''
+
 
     # hidden layer for output as the final results
     #############################################
@@ -87,11 +95,12 @@ def RNN(X, weights, biases):
 
     # # or
     # unpack to list [(batch, outputs)..] * steps
-    if int((tf.__version__).split('.')[1]) < 12 and int((tf.__version__).split('.')[0]) < 1:
-        outputs = tf.unpack(tf.transpose(outputs, [1, 0, 2]))    # states is the last outputs
-    else:
-        outputs = tf.unstack(tf.transpose(outputs, [1,0,2]))
-    results = tf.matmul(outputs[-1], weights['out']) + biases['out']    # shape = (128, 10)
+    # if int((tf.__version__).split('.')[1]) < 12 and int((tf.__version__).split('.')[0]) < 1:
+    #     outputs = tf.unpack(tf.transpose(outputs, [1, 0, 2]))    # states is the last outputs
+    # else:
+    #       这些没必要的判断都不要了，以后不会有的
+    outputs = tf.unstack(tf.transpose(outputs, [1, 0, 2]))
+    results = tf.matmul(outputs[-1], weights['out']) + biases['out']  # shape = (128, 10)
 
     return results
 
@@ -106,10 +115,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 with tf.Session() as sess:
     # tf.initialize_all_variables() no long valid from
     # 2017-03-02 if using tensorflow >= 0.12
-    if int((tf.__version__).split('.')[1]) < 12 and int((tf.__version__).split('.')[0]) < 1:
-        init = tf.initialize_all_variables()
-    else:
-        init = tf.global_variables_initializer()
+    init = tf.global_variables_initializer()
     sess.run(init)
     step = 0
     while step * batch_size < training_iters:
@@ -121,10 +127,7 @@ with tf.Session() as sess:
         })
         if step % 20 == 0:
             print(sess.run(accuracy, feed_dict={
-            x: batch_xs,
-            y: batch_ys,
+                x: batch_xs,
+                y: batch_ys,
             }))
         step += 1
-
-
-

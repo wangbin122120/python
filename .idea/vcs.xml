@@ -3,6 +3,9 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../kivy2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../tensorflow" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../tensorflow/Tutorials" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../tensorflow/tensorflow/models" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../莫烦" vcs="Git" />
   </component>
 </project>
