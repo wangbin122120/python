@@ -27,20 +27,18 @@ import time
 from six.moves import xrange  # pylint: disable=redefined-builtin
 import tensorflow as tf
 
+# 限制显卡内存
+config = tf.ConfigProto(allow_soft_placement=True)
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
+config.gpu_options.allow_growth = True
+sess = tf.Session(config=config)
+
 from tensorflow.examples.tutorials.mnist import input_data
 from tensorflow.examples.tutorials.mnist import mnist
 
 # Basic model parameters as external flags.
 FLAGS = None
 
-
-#import tensorflow as tf
-config = tf.ConfigProto(allow_soft_placement=True)
-#最多占gpu资源的70%
-gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
-#开始不会给tensorflow全部gpu资源 而是按需增加
-config.gpu_options.allow_growth = True
-sess = tf.Session(config=config)
 
 def placeholder_inputs(batch_size):
   """Generate placeholder variables to represent the input tensors.
