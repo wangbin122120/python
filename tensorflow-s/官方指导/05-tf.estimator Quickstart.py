@@ -46,7 +46,7 @@ def main():
   classifier = tf.estimator.DNNClassifier(feature_columns=feature_columns,
                                           hidden_units=[10, 20, 10],
                                           n_classes=3,
-                                          model_dir="/tmp/iris_model")
+                                          model_dir="/home/w/tmp/tensorflow/05-tf.estimator Quickstart/iris_model")
   # Define the training inputs
   train_input_fn = tf.estimator.inputs.numpy_input_fn(
       x={"x": np.array(training_set.data)},
