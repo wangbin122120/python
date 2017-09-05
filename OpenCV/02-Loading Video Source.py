@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-cap = cv2.VideoCapture(0)  # 调用摄像头，如果有多个，就从0开始编号
+cap = cv2.VideoCapture('video/studio-install-windows.mp4')  # 调用摄像头，如果有多个，就从0开始编号
 
 while True:
     ret,frame=cap.read()
