@@ -1,0 +1,9 @@
+视频见youtube-sentdex《Python plays Grand Theft Auto 5》
+https://www.youtube.com/watch?v=h98js2usaVo&list=PLQVvvaa0QuDeETZEOy4VdocT7TOjfSA8a&index=4
+
+Now that we're reading frames, and can do input, we're back on the task of trying to do some self-driving. In order to do this, a common goal is to be able to detect lanes. We can use lane detection to both create a self-driving AI that works based on simple rules based on these lanes and also to train an AI that we hope could later generalize to more scenarios.
+
+Project Github: https://github.com/sentdex/pygta5
+https://twitter.com/sentdex
+https://www.facebook.com/pythonprogra...
+https://plus.google.com/+sentdex
