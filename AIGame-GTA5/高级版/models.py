@@ -481,7 +481,7 @@ def inception_v3_3d(width, height, frame_count, lr, output=9, model_name = 'sent
 
 def sentnet_LSTM_gray(width, height, frame_count, lr, output=9):
     network = input_data(shape=[None, width, height], name='input')
-    #network = tflearn.input_data(shape=[None, 28, 28], name='input')
+    #network = TFLearn.input_data(shape=[None, 28, 28], name='input')
     network = tflearn.lstm(network, 128, return_seq=True)
     network = tflearn.lstm(network, 128)
     network = tflearn.fully_connected(network, 9, activation='softmax')

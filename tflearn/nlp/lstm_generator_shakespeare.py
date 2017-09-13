@@ -11,7 +11,7 @@ path = "shakespeare_input.txt"
 char_idx_file = 'char_idx.pickle'
 
 if not os.path.isfile(path):
-    urllib.request.urlretrieve("https://raw.githubusercontent.com/tflearn/tflearn.github.io/master/resources/shakespeare_input.txt", path)
+    urllib.request.urlretrieve("https://raw.githubusercontent.com/TFLearn/TFLearn.github.io/master/resources/shakespeare_input.txt", path)
 
 maxlen = 25
 

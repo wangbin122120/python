@@ -98,7 +98,7 @@ class TFLearnWideAndDeep(object):
 
     def build_model(self, learning_rate=[0.001, 0.01]):
         '''
-        Model - wide and deep - built using tflearn
+        Model - wide and deep - built using TFLearn
         '''
         n_cc = len(self.continuous_columns)
         n_categories = 1			# two categories: is_idv and is_not_idv

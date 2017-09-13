@@ -60,7 +60,7 @@ dense1_vars = tflearn.variables.get_layer_variables_by_name('dense1')
 # Get a variable's value, using model `get_weights` method:
 print("Dense1 layer weights:")
 print(model.get_weights(dense1_vars[0]))
-# Or using generic tflearn function:
+# Or using generic TFLearn function:
 print("Dense1 layer biases:")
 with model.session.as_default():
     print(tflearn.variables.get_value(dense1_vars[1]))
@@ -70,7 +70,7 @@ with model.session.as_default():
 # Get variable's value, using model `get_weights` method:
 print("Dense2 layer weights:")
 print(model.get_weights(dense2.W))
-# Or using generic tflearn function:
+# Or using generic TFLearn function:
 print("Dense2 layer biases:")
 with model.session.as_default():
     print(tflearn.variables.get_value(dense2.b))

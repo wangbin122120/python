@@ -49,7 +49,7 @@ except Exception:
 # Change that value to test instead of train
 testing = False
 # Model path (to load when testing)
-test_model_path = '/path/to/your/qlearning.tflearn.ckpt'
+test_model_path = '/path/to/your/qlearning.TFLearn.ckpt'
 # Atari game to learn
 # You can also try: 'Breakout-v0', 'Pong-v0', 'SpaceInvaders-v0', ...
 game = 'MsPacman-v0'
@@ -84,7 +84,7 @@ show_training = True
 # Directory for storing tensorboard summaries
 summary_dir = '/tmp/tflearn_logs/'
 summary_interval = 100
-checkpoint_path = 'qlearning.tflearn.ckpt'
+checkpoint_path = 'qlearning.TFLearn.ckpt'
 checkpoint_interval = 2000
 # Number of episodes to run gym evaluation
 num_eval_episodes = 100
