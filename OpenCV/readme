@@ -1,0 +1,21 @@
+主要的教学内容来源：
+# https://pythonprogramming.net/loading-video-python-opencv-tutorial/?completed=/loading-images-python-opencv-tutorial/
+
+补充，更多的视频操作参考:是旧版本的opencv，很多语法都已经迁移。
+# https://segmentfault.com/a/1190000003742481
+# Python-OpenCV 处理视频（一）： 输入输出 https://segmentfault.com/a/1190000003804797
+# Python-OpenCV 处理视频（二）： 视频处理 https://segmentfault.com/a/1190000003804807
+
+
+# 关于sentdex的教程，csdn上也有读者整理了一些笔记，写的很详细，挺有参考价值:
+
+http://blog.csdn.net/qingyuanluofeng/article/details/51576498
+Opencv3.0-python的那些事儿：（一）、Opencv的图像和视频处理基本用法
+对应章节：01-06
+
+http://blog.csdn.net/qingyuanluofeng/article/details/51582137
+Opencv3.0-python的那些事儿：（二）、Opencv的颜色空间转换
+对应章节：07
+
+
+
